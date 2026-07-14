@@ -66,5 +66,3 @@ Navigate to `http://localhost:3000` to interact with the application.
 
 ---
 
-## Production Deployment
-Please refer to [DEPLOYMENT.md](file:///DEPLOYMENT.md) for full instructions on deploying the smart contracts, configuring web3 RPCs, setting up production databases (e.g. Supabase), and launching on Vercel.

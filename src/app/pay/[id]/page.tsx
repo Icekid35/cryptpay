@@ -64,12 +64,12 @@ export default function CheckoutPage() {
   const { writeContractAsync } = useWriteContract();
 
   // Page States
-  const [link, setLink] = useState(null);
+  const [link, setLink] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [paying, setPaying] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [paymentResult, setPaymentResult] = useState(null);
+  const [paymentResult, setPaymentResult] = useState<any>(null);
   
   // QR Code States
   const [qrDataUrl, setQrDataUrl] = useState('');
@@ -78,7 +78,7 @@ export default function CheckoutPage() {
   // Form Input States
   const [customerEmail, setCustomerEmail] = useState('');
   const [customerName, setCustomerName] = useState('');
-  const [formErrors, setFormErrors] = useState({});
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
   // Fetch Payment Link details
   useEffect(() => {
@@ -136,7 +136,7 @@ export default function CheckoutPage() {
   };
 
   const validateForm = () => {
-    const errors = {};
+    const errors: Record<string, string> = {};
     if (link.fields?.some(f => f.name === 'email') && !customerEmail) {
       errors.email = 'Email address is required';
     }
@@ -230,7 +230,7 @@ export default function CheckoutPage() {
           abi: erc20Abi,
           functionName: 'approve',
           args: [CRYPTPAY_CONTRACT_ADDRESS, parsedAmount]
-        });
+        } as any);
 
         // Step 2: Register subscription on-chain
         setError('Confirming subscription registration in wallet...');
@@ -240,7 +240,7 @@ export default function CheckoutPage() {
           abi: cryptPayContractAbi,
           functionName: 'createSubscription',
           args: [link.merchantAddress, tokenAddress, parsedAmount, intervalInSeconds]
-        });
+        } as any);
         txHash = tx;
       } else {
         // One-time payment logic
@@ -266,7 +266,7 @@ export default function CheckoutPage() {
             abi: erc20Abi,
             functionName: 'transfer',
             args: [link.merchantAddress, parsedAmount]
-          });
+          } as any);
           txHash = tx;
         }
       }

@@ -15,21 +15,21 @@ import QRCode from 'qrcode';
 export default function Home() {
   const { address, isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
-  const [links, setLinks] = useState([]);
-  const [payments, setPayments] = useState([]);
-  const [subscriptions, setSubscriptions] = useState([]);
+  const [links, setLinks] = useState<any[]>([]);
+  const [payments, setPayments] = useState<any[]>([]);
+  const [subscriptions, setSubscriptions] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const [copiedId, setCopiedId] = useState(null);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
   const [mobileActiveTab, setMobileActiveTab] = useState('links'); // 'links' | 'subscriptions' | 'activity'
   
   // Modal States
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showQrModal, setShowQrModal] = useState(false);
-  const [selectedLinkForQr, setSelectedLinkForQr] = useState(null);
+  const [selectedLinkForQr, setSelectedLinkForQr] = useState<any>(null);
   const [qrCodeDataUrl, setQrCodeDataUrl] = useState('');
 
   // Landing Page Interactive States
-  const [openFaq, setOpenFaq] = useState(null);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   // Form States for creating Link
   const [title, setTitle] = useState('');
