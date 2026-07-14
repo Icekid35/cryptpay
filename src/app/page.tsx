@@ -770,6 +770,7 @@ export default function Home() {
                     <option value="Ethereum Mainnet">Ethereum</option>
                     <option value="Polygon">Polygon</option>
                     <option value="Arbitrum">Arbitrum</option>
+                    <option value="Optimism">Optimism</option>
                   </select>
                 </div>
               </div>

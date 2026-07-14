@@ -28,13 +28,43 @@ const erc20Abi = [
   }
 ];
 
-// Common Token Addresses (Sepolia Testnet)
-const TOKEN_ADDRESSES = {
+// Common Token Addresses by Network
+const TOKEN_ADDRESSES: Record<string, Record<string, string>> = {
   sepolia: {
     USDC: '0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238',
-    USDT: '0xaA8E23Fb1079EA71e0a56F48a2aa51851D8433D0'
-  }
+    USDT: '0xaA8E23Fb1079EA71e0a56F48a2aa51851D8433D0',
+  },
+  ethereumMainnet: {
+    USDC: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+    USDT: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+  },
+  polygon: {
+    USDC: '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359',
+    USDT: '0xc2132D05D31c914a87C6611C10748AEb04B58e8F',
+  },
+  arbitrum: {
+    USDC: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
+    USDT: '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9',
+  },
+  optimism: {
+    USDC: '0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85',
+    USDT: '0x94b008aA00579c1307B0EF2c499aD98a8ce58e58',
+  },
 };
+
+const NETWORK_KEY_MAP: Record<string, string> = {
+  'Sepolia Testnet': 'sepolia',
+  'Ethereum Mainnet': 'ethereumMainnet',
+  'Polygon': 'polygon',
+  'Arbitrum': 'arbitrum',
+  'Optimism': 'optimism',
+};
+
+function getTokenAddress(network: string, token: string): string | undefined {
+  const key = NETWORK_KEY_MAP[network];
+  if (!key) return undefined;
+  return TOKEN_ADDRESSES[key]?.[token];
+}
 
 // Deployed smart contract address
 const CRYPTPAY_CONTRACT_ADDRESS = '0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8';
@@ -116,7 +146,7 @@ export default function CheckoutPage() {
       qrUri = `ethereum:${merchant}?value=${parseEther(amount.toString())}`;
     } else {
       // ERC20 token transfer URI format
-      const tokenAddress = TOKEN_ADDRESSES.sepolia[paymentLink.token] || '0x0000000000000000000000000000000000000000';
+      const tokenAddress = getTokenAddress(paymentLink.network, paymentLink.token) || '0x0000000000000000000000000000000000000000';
       qrUri = `ethereum:${tokenAddress}/transfer?address=${merchant}&uint256=${parseUnits(amount.toString(), 6)}`;
     }
     
@@ -215,7 +245,7 @@ export default function CheckoutPage() {
           throw new Error('On-chain subscriptions require ERC20 tokens (USDC or USDT) to authorize recurring pull payments.');
         }
 
-        const tokenAddress = TOKEN_ADDRESSES.sepolia[link.token];
+        const tokenAddress = getTokenAddress(link.network, link.token);
         if (!tokenAddress) {
           throw new Error(`Token address for ${link.token} is not defined on this network.`);
         }
@@ -253,7 +283,7 @@ export default function CheckoutPage() {
           txHash = tx;
         } else {
           // Send ERC20 Token transaction
-          const tokenAddress = TOKEN_ADDRESSES.sepolia[link.token];
+          const tokenAddress = getTokenAddress(link.network, link.token);
           if (!tokenAddress) {
             throw new Error(`Token address for ${link.token} is not defined on this network.`);
           }
