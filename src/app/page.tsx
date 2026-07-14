@@ -157,6 +157,12 @@ export default function Home() {
 
   // Stats Calculations
   const totalRevenue = payments.reduce((acc, curr) => acc + curr.amount, 0);
+  const revenueByToken = payments.reduce<Record<string, number>>((acc, curr) => {
+    const token = curr.token || 'ETH';
+    acc[token] = (acc[token] || 0) + curr.amount;
+    return acc;
+  }, {});
+  const supportedTokens = ['ETH', 'USDC', 'USDT'];
   const activeLinksCount = links.length;
   const recentPaymentsCount = payments.length;
   const activeSubsCount = subscriptions.filter(s => s.status === 'active').length;
@@ -428,8 +434,12 @@ export default function Home() {
           </div>
 
           <div className="col-3 glass-card stat-card">
-            <div className="stat-label">Total Revenue</div>
-            <div className="stat-value">{totalRevenue.toFixed(4)} ETH</div>
+            <div className="stat-label">Total Revenue (All)</div>
+            <div className="stat-value">
+              {revenueByToken.ETH ? `${revenueByToken.ETH.toFixed(4)} ETH` : '0.00 ETH'}
+            </div>
+            {revenueByToken.USDC && <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>+{revenueByToken.USDC.toFixed(2)} USDC</div>}
+            {revenueByToken.USDT && <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>+{revenueByToken.USDT.toFixed(2)} USDT</div>}
             <div className="stat-change up"><ArrowUpRight size={12} /> +12% this week</div>
           </div>
           
