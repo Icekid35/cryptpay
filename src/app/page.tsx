@@ -570,7 +570,31 @@ export default function Home() {
 
           {/* Payment History Card */}
           <div className={`col-4 glass-card mobile-tab-section ${mobileActiveTab === 'activity' ? 'mobile-visible' : 'mobile-hidden'}`} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            <h3 style={{ fontSize: '1.15rem' }}>Recent Activity</h3>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h3 style={{ fontSize: '1.15rem' }}>Recent Activity</h3>
+              {payments.length > 0 && (
+                <button
+                  onClick={() => {
+                    const headers = ['ID', 'Customer', 'Email', 'Amount', 'Token', 'Network', 'Date', 'TX Hash', 'Status'];
+                    const rows = payments.map(p => [
+                      p.id, p.customerName || 'Anonymous', p.customerEmail || '',
+                      p.amount, p.token, p.network,
+                      new Date(p.timestamp).toISOString(), p.txHash || '', 'confirmed'
+                    ]);
+                    const csv = [headers.join(','), ...rows.map(r => r.map(v => `"${v}"`).join(','))].join('\n');
+                    const blob = new Blob([csv], { type: 'text/csv' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url; a.download = `payments-${new Date().toISOString().split('T')[0]}.csv`;
+                    a.click(); URL.revokeObjectURL(url);
+                  }}
+                  className="btn btn-secondary"
+                  style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}
+                >
+                  <Download size={14} /> CSV
+                </button>
+              )}
+            </div>
             
             {loading ? (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
