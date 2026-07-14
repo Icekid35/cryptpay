@@ -47,12 +47,42 @@ export default function InvoicePage() {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '1rem' }}>
-        <RefreshCw className="animate-spin" size={32} color="var(--accent-primary)" style={{ animation: 'spin 1.5s linear infinite' }} />
-        <p style={{ color: 'var(--text-secondary)' }}>Retrieving invoice...</p>
-        <style dangerouslySetInnerHTML={{__html: `
-          @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        `}} />
+      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <header className="no-print" style={{ borderBottom: '1px solid var(--border-color)', backdropFilter: 'blur(12px)' }}>
+          <div className="nav-container">
+            <div className="skeleton" style={{ width: '100px', height: '36px', borderRadius: '6px' }}></div>
+          </div>
+        </header>
+        <main style={{ flex: 1, padding: '3rem 1.5rem', display: 'flex', justifyContent: 'center' }}>
+          <div style={{ maxWidth: '800px', width: '100%', padding: '3rem', display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <div>
+                <div className="skeleton" style={{ width: '120px', height: '32px', marginBottom: '0.5rem' }}></div>
+                <div className="skeleton skeleton-text" style={{ width: '180px' }}></div>
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <div className="skeleton" style={{ width: '100px', height: '36px', marginBottom: '0.5rem' }}></div>
+                <div className="skeleton skeleton-text" style={{ width: '150px' }}></div>
+              </div>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+              <div>
+                <div className="skeleton skeleton-text" style={{ width: '40%' }}></div>
+                <div className="skeleton skeleton-text" style={{ width: '100%' }}></div>
+                <div className="skeleton skeleton-text" style={{ width: '80%' }}></div>
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <div className="skeleton skeleton-text" style={{ width: '30%', marginLeft: 'auto' }}></div>
+                <div className="skeleton skeleton-text" style={{ width: '60%', marginLeft: 'auto' }}></div>
+                <div className="skeleton skeleton-text" style={{ width: '45%', marginLeft: 'auto' }}></div>
+              </div>
+            </div>
+            <div className="skeleton" style={{ width: '100%', height: '120px', borderRadius: '8px' }}></div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <div className="skeleton" style={{ width: '300px', height: '80px', borderRadius: '8px' }}></div>
+            </div>
+          </div>
+        </main>
       </div>
     );
   }
